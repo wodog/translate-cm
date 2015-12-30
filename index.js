@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 const http = require('http');
 const url = require('url');
@@ -14,7 +14,7 @@ exports = module.exports = request;
 /**
  * send request
  */
-function request (q){
+function request(q) {
   return new Promise((resolve, reject) => {
     q = encodeURIComponent(q);
     let request_url = `${API_addr}?keyfrom=${keyfrom}&key=${API_key}&type=data&doctype=${doctype}&version=1.1&q=${q}`;
@@ -31,9 +31,9 @@ function request (q){
       });
     });
 
-    req.on('error', function(err){
+    req.on('error', function(err) {
       reject(`problem with request ${err.message}`);
-    })
+    });
 
     req.end();
   });

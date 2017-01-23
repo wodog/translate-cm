@@ -1,18 +1,40 @@
 #! /usr/bin/env node
 
-'use strict'
+const program = require('commander')
+const request = require('../request');
+// const log = require('../log')
 
-const request = require('../');
+// program
+//   .command('log')
+//   .option('', '')
+//   .action(function(cmd, options) {
+//     console.log(log.getLog())
+//   })
 
+program
+  .action(function(...cmd) {
+    const options = cmd.pop()
+    const q = cmd.join(' ')
+    request(q)
+      .then((data) => {
+    	   const d = getOutput(data);
+         console.log(d)
+        //  log.writeLog(d)
+       })
+      .catch(err => {
+        console.log(err)
+      });
+  })
 
+program
+  .parse(process.argv)
 
-
-let q = process.argv.slice(2, 3)[0];
-
-if (!q) {
-  return console.log('请输入要翻译的内容');
+function getOutput(data) {
+  let result
+  if (data.basic) {
+    result = data.basic.explains.join('\n');
+  } else {
+    result = data.translation[0];
+  }
+  return result
 }
-
-request(q).then((data) => {
-  console.log(data.translation.toString());
-});
